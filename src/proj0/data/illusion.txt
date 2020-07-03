@@ -18,7 +18,7 @@
  1.414e13  0.000e00 -1.414e06   0.000e00   2.000e22 blackhole.gif
 
 
-// This is a good test case for seeing if the positions are being updated
+// This is a good BinarySearch.test case for seeing if the positions are being updated
 // properly.
 // If there is one big force loop (i.e., program updates position
 // before computing all the new forces) the bodies will fly off 
