@@ -1,4 +1,4 @@
-package week1_1;
+package lecture1;
 
 public class HelloWorld {
     public static void main(String[] args) {

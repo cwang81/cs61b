@@ -1,4 +1,4 @@
-package week1_2;
+package lecture2;
 
 public class Dog {
 	public static int weightInPounds;

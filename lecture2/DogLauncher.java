@@ -1,4 +1,4 @@
-package week1_2;
+package lecture2;
 
 public class DogLauncher {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package week1_2;
+package lecture2;
 
 public class ArgsSum {
     public static void main(String[] args) {
