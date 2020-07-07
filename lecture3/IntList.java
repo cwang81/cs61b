@@ -34,4 +34,52 @@ public class IntList {
 			return first;
 		return rest.get(i - 1);
 	}
+
+	public static IntList incrList(IntList L, int x) {
+        L.first = L.first + x;
+        if (L.rest != null) {
+            return incrList(L.rest, x);
+        }
+        else {
+            return L;
+        }
+    }
+
+    public static IntList dincrList(IntList L, int x) {
+        IntList tmp = new IntList(L.get(0), null);
+        IntList P = tmp;
+        int len = L.Size();
+
+        for (int i = 1; i < len; i++) {
+            tmp.rest = new IntList(L.get(i), null);
+            tmp = tmp.rest;
+        }
+
+        tmp = P;
+        int i = 0;
+        while (i < len) {
+            tmp.first += x;
+            tmp = tmp.rest;
+            i++;
+        }
+        return P;
+    }
+
+    public static void main(String[] args) {
+        IntList L = new IntList(5, null);
+        L.rest = new IntList(10, null);
+        L.rest.rest = new IntList(15, null);
+
+        incrList(L, 3);
+        IntList X = dincrList(L, 3);
+    }
 }
+
+
+
+
+
+
+
+
+
