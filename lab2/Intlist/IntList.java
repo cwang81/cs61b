@@ -81,18 +81,50 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList P = A;
+        while (A.rest != null)
+            A = A.rest;
+
+        A.rest = B;
+        return P;
+    }
+
+    public static IntList dcatenateRe(IntList A, IntList B) {
+        // base case
+        if (A == null)
+            return B;
+        else {
+            A.rest = dcatenateRe(A.rest, B);
+            return A;
+        }
     }
 
     /**
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
+
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        IntList P = new IntList(A.first, null);
+        IntList tmp = P;
+        while (A.rest != null) {
+            tmp.rest = new IntList(A.rest.first, null);
+            A = A.rest;
+            tmp = tmp.rest;
+        }
+        tmp.rest = B;
+        return P;
     }
+
+    public static IntList catenateRe(IntList A, IntList B) {
+        if (A == null)
+            return B;
+        return new IntList(A.first, catenateRe(A.rest, B));
+    }
+
+
+
+
 
 
 
