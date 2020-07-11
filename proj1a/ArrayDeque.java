@@ -3,42 +3,160 @@ public class ArrayDeque<Item> {
     private int size;
     private int nextFirst;
     private int nextLast;
+    private int initSize = 8;
+    private double usageFactor = 0.25;
 
+    /** Constructor. */
     public ArrayDeque() {
-        items = (Item[]) new Object[8];
+        items = (Item[]) new Object[initSize];
         size = 0;
         nextFirst = 0;
         nextLast = 1;
     }
 
-    /** Resizes the item array to the target capacity. */
-    private void resize(int capacity) {
-        Item[] a = (Item[]) new Object[capacity];
-        System.arraycopy(items, 0, a, 0, size);
-        items = a;
-        size = capacity;
+    /** Checks if the Deque is empty. */
+    private boolean isEmpty() {
+        return (size == 0);
     }
 
-    public void addLast(Item i) {
-        if (size == items.length) {
-            resize(size * 2);
+    /** Checks if the Deque is full. */
+    private boolean isFull() {
+        return (size == items.length);
+    }
+
+    /** Checks if the Deque needs to be downsized. */
+    private boolean isSparse() {
+        return (size >= 16 && ((double) size / items.length < usageFactor));
+    }
+
+    /** Doubles the Deque size. */
+    private void increaseSize() {
+        Item[] newItems = (Item[]) new Object[size * 2];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = get(i);
         }
-        items[size] = i;
+
+        items = newItems;
+        nextFirst = items.length - 1;
+        nextLast = size;
+    }
+
+    /** Cuts half the Deque size. */
+    private void decreaseSize() {
+        Item[] newItems = (Item[]) new Object[size / 2];
+        for(int i = 0; i < size; i++) {
+            newItems[i] = get(i);
+        }
+
+        items = newItems;
+        nextFirst = items.length - 1;
+        nextLast = size;
+    }
+
+    /** Returns the size of the Deque. */
+    public int size() {
+        return size;
+    }
+
+    /** */
+    private int minusOne(int index) {
+        if (index == 0) {
+            return items.length - 1;
+        }
+        return (index - 1);
+    }
+
+    /** */
+    private int plusOne(int index) {
+        return (index + 1) % items.length;
+    }
+
+    /** Adds item i to the left of the Deque.
+     * @param i The item to be added.
+     */
+    public void addFirst(Item i) {
+        if (isFull()) {
+            increaseSize();
+        }
+
+        items[nextFirst] = i;
+        nextFirst = minusOne(nextFirst);
         size++;
     }
 
-    public Item removeLast() {
-        Item i = items[size];
-        items[size] = null;
-        size--;
-        return i;
+    /** Adds item i to the right of the Deque.
+     * @param i The item to be added.
+     */
+    public void addLast(Item i) {
+        if (isFull()) {
+            increaseSize();
+        }
+
+        items[nextLast] = i;
+        nextLast = plusOne(nextLast);
+        size++;
     }
 
-    public ArrayDeque(ArrayDeque other) {
-        Item[] A = (Item[]) new Object[size];
+    /** Returns the item of the given index. */
+    public Item get(int index) {
+        if (index >= size || index < 0) {
+            return null;
+        }
 
-        for(int i = 0; i < size; i++) {
-            A[i] = items[i];
+        int firstIndex = plusOne(nextFirst);
+        int targetIndex = (firstIndex + index) % items.length;
+
+        return items[targetIndex];
+    }
+
+    /** Removes and pops the "leftmost" item of the Deque.
+     * @return The removed item.
+     */
+    public Item removeFirst() {
+        int indexOfRemoval = plusOne(nextFirst);
+        Item toBeRemove = items[indexOfRemoval];
+        items[indexOfRemoval] = null;
+        nextFirst = indexOfRemoval;
+        size--;
+
+        if (isSparse()) {
+            decreaseSize();
+        }
+
+        return toBeRemove;
+    }
+
+    /** Removes and pops the "rightmost" item of the Deque.
+     * @return The removed item.
+     */
+    public Item removeLast() {
+        int indexOfRemoval = minusOne(nextLast);
+        Item toBeRemove = items[indexOfRemoval];
+        items[indexOfRemoval] = null;
+        nextLast = indexOfRemoval;
+        size--;
+
+        if (isSparse()) {
+            decreaseSize();
+        }
+
+        return toBeRemove;
+    }
+
+    /** Prints out the items in the Deque. */
+    public void printDeque() {
+       for (int i = 0; i < size; i++) {
+            System.out.println(get(i) + " ");
+        }
+        System.out.println();
+    }
+
+    /** Creates a deep copy of other. */
+    public ArrayDeque(ArrayDeque other) {
+        Item[] copyOfOther = (Item[]) new Object[size];
+
+        for (int i = 0; i < size; i++) {
+            copyOfOther[i] = items[i];
         }
     }
 
