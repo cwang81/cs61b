@@ -16,39 +16,20 @@ public class SLList {
     }
 
     public void insert(int x, int position) {
-        if (position == 0) {
+        if (first == null || position == 0) {
             first = new IntNode(x, first);
             return;
         }
+
         IntNode p = first;
-        for (int i = 0; i < position - 1; i++) {
-            if (p.next == null) {
-                p.next = new IntNode(x, null);
-                return;
-            }
+        while (position > 1 && p.next != null) {
+            position--;
             p = p.next;
         }
         p.next = new IntNode(x, p.next);
     }
 
     public void reverse() {
-        IntNode p = first;
-        IntNode tmp = first;
-        int temp;
-        int size = this.size();
-        for (int count = 0; count < size / 2; count++) {
-            for (int i = 0; i < size - 1 - count; i++) {
-                tmp = tmp.next;
-            }
-            temp = tmp.item;
-            tmp.item = p.item;
-            p.item = temp;
-            p = p.next;
-            tmp = first;
-        }
-    }
-
-    public void rev() {
         IntNode frontOfReversed = null;
         IntNode nextNodeToAdd = first;
         while (nextNodeToAdd != null) {
@@ -60,14 +41,19 @@ public class SLList {
         first = frontOfReversed;
     }
 
-    public int size() {
-        int size = 0;
-        IntNode p = first;
-        while (p != null) {
-            size++;
-            p = p.next;
+    public void reverseRecursive() {
+        first = reverseRecursiveHelper(first);
+    }
+
+    private IntNode reverseRecursiveHelper(IntNode front) {
+        if (front == null || front.next == null) {
+            return front;
+        } else {
+            IntNode reversed = reverseRecursiveHelper(front.next);
+            front.next.next = front;
+            front.next = null;
+            return reversed;
         }
-        return size;
     }
 
     public static void main(String[] args) {
@@ -81,6 +67,6 @@ public class SLList {
         p.insert(12, 55);
         p.insert(13, 55);
 
-        p.rev();
+        p.reverseRecursive();
     }
 }
