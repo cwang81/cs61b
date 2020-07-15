@@ -1,47 +1,56 @@
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<Item> implements Deque<Item> {
 
     private class ListNode {
         public ListNode prev;
-        public T item;
+        public Item item;
         public ListNode next;
 
-        public ListNode(ListNode prev, T item, ListNode next) {
+        public ListNode(ListNode prev, Item item, ListNode next) {
             this.prev = prev;
             this.item = item;
             this.next = next;
         }
     }
 
-    public T item;
+
+
+    public Item item;
     private ListNode sentinel;
     private int size;
 
-    /** Adds an element at the beginning of the LinkedListDeque. */
-    public void addFirst(T i) {
+    /**
+     * Adds an element at the beginning of the LinkedListDeque.
+     */
+    @Override
+    public void addFirst(Item i) {
         sentinel.next = new ListNode(sentinel, i, sentinel.next);
         sentinel.next.next.prev = sentinel.next;
         size++;
     }
 
-    /** Adds an element to the end of the LinkedListDeque. */
-    public void addLast(T i) {
+    /**
+     * Adds an element to the end of the LinkedListDeque.
+     */
+    @Override
+    public void addLast(Item i) {
         sentinel.prev = new ListNode(sentinel.prev, i, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
         size++;
     }
 
-    /** Checks if the LinkedListDeque is empty or not. */
-    public boolean isEmpty() {
-        return (size == 0);
-    }
-
-    /** Returns the length of the LinkedListDeque. */
+    /**
+     * Returns the length of the LinkedListDeque.
+     */
+    @Override
     public int size() {
         return size;
     }
 
-    /** Prints out the items of the LinkeListDeque, from first to last. */
+    /**
+     * Prints out the items of the LinkeListDeque, from first to last.
+     */
+    @Override
     public void printDeque() {
         ListNode p = sentinel;
         for (int i = 0; i < size; i++) {
@@ -52,30 +61,39 @@ public class LinkedListDeque<T> {
         return;
     }
 
-    /** Removes the first item in the LinkedListDeque. */
-    public T removeFirst() {
+    /**
+     * Removes the first item in the LinkedListDeque.
+     */
+    @Override
+    public Item removeFirst() {
         if (size == 0)
             return null;
-        T i = sentinel.next.item;
+        Item i = sentinel.next.item;
         sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
         size--;
         return i;
     }
 
-    /** Removes the last item in the LinkedListDeque. */
-    public T removeLast() {
+    /**
+     * Removes the last item in the LinkedListDeque.
+     */
+    @Override
+    public Item removeLast() {
         if (size == 0)
             return null;
-        T i = sentinel.prev.item;
+        Item i = sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
         size--;
         return i;
     }
 
-    /** Returns the ith value of the LinkedListDeque. */
-    public T get(int index) {
+    /**
+     * Returns the ith value of the LinkedListDeque.
+     */
+    @Override
+    public Item get(int index) {
         ListNode p = sentinel.next;
         for (int i = 0; i < index; i++) {
             p = p.next;
@@ -83,7 +101,9 @@ public class LinkedListDeque<T> {
         return p.item;
     }
 
-    /** Creates an empty LinkedListDeque. */
+    /**
+     * Creates an empty LinkedListDeque.
+     */
     public LinkedListDeque() {
         sentinel = new ListNode(null, item, null);
         sentinel.next = sentinel;
@@ -91,16 +111,20 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
-    /** Creates an LinkedListDeque with T item. */
-    public LinkedListDeque(T i) {
+    /**
+     * Creates an LinkedListDeque with T item.
+     */
+    public LinkedListDeque(Item i) {
         sentinel = new ListNode(null, item, null);
         sentinel.next = new ListNode(sentinel, i, sentinel);
         sentinel.prev = sentinel.next;
         size = 1;
     }
 
-    /** Creates a deep copy of other. */
-    public LinkedListDeque(LinkedListDeque<T> other) {
+    /**
+     * Creates a deep copy of other.
+     */
+    public LinkedListDeque(LinkedListDeque<Item> other) {
         sentinel = new ListNode(null, item, null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
@@ -112,14 +136,15 @@ public class LinkedListDeque<T> {
         }
     }
 
-    /** Returns the ith value of the LinkedListDeque.
-     *  Same as get, but uses recursion.
+    /**
+     * Returns the ith value of the LinkedListDeque.
+     * Same as get, but uses recursion.
      */
-    public T getRecursive(int index) {
+    public Item getRecursive(int index) {
         return getRecursiveAssist(index, sentinel.next);
     }
 
-    public T getRecursiveAssist(int index, ListNode l) {
+    private Item getRecursiveAssist(int index, ListNode l) {
         if (index == 0) {
             return l.item;
         }

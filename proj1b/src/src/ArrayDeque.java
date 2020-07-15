@@ -1,4 +1,6 @@
-public class ArrayDeque<Item> {
+
+public class ArrayDeque<Item> implements Deque<Item> {
+
     private Item[] items;
     private int size;
     private int nextFirst;
@@ -12,11 +14,6 @@ public class ArrayDeque<Item> {
         size = 0;
         nextFirst = 0;
         nextLast = 1;
-    }
-
-    /** Checks if the Deque is empty. */
-    private boolean isEmpty() {
-        return (size == 0);
     }
 
     /** Checks if the Deque is full. */
@@ -53,12 +50,7 @@ public class ArrayDeque<Item> {
         nextLast = size;
     }
 
-    /** Returns the size of the Deque. */
-    public int size() {
-        return size;
-    }
-
-    /** */
+    /** Helper method to locate the nextFirst or nextLast pointer. */
     private int minusOne(int index) {
         if (index == 0) {
             return items.length - 1;
@@ -66,14 +58,23 @@ public class ArrayDeque<Item> {
         return (index - 1);
     }
 
-    /** */
+    /** Helper method to locate the nextFirst or nextLast pointer. */
     private int plusOne(int index) {
         return (index + 1) % items.length;
     }
 
+
+    /** Returns the size of the Deque. */
+    @Override
+    public int size() {
+        return size;
+    }
+
+
     /** Adds item i to the left of the Deque.
      * @param i The item to be added.
      */
+    @Override
     public void addFirst(Item i) {
         if (isFull()) {
             increaseSize();
@@ -87,6 +88,7 @@ public class ArrayDeque<Item> {
     /** Adds item i to the right of the Deque.
      * @param i The item to be added.
      */
+    @Override
     public void addLast(Item i) {
         if (isFull()) {
             increaseSize();
@@ -98,6 +100,7 @@ public class ArrayDeque<Item> {
     }
 
     /** Returns the item of the given index. */
+    @Override
     public Item get(int index) {
         if (index >= size || index < 0) {
             return null;
@@ -112,6 +115,7 @@ public class ArrayDeque<Item> {
     /** Removes and pops the "leftmost" item of the Deque.
      * @return The removed item.
      */
+    @Override
     public Item removeFirst() {
         int indexOfRemoval = plusOne(nextFirst);
         Item toBeRemove = items[indexOfRemoval];
@@ -129,6 +133,7 @@ public class ArrayDeque<Item> {
     /** Removes and pops the "rightmost" item of the Deque.
      * @return The removed item.
      */
+    @Override
     public Item removeLast() {
         int indexOfRemoval = minusOne(nextLast);
         Item toBeRemove = items[indexOfRemoval];
@@ -144,6 +149,7 @@ public class ArrayDeque<Item> {
     }
 
     /** Prints out the items in the Deque. */
+    @Override
     public void printDeque() {
        for (int i = 0; i < size; i++) {
             System.out.println(get(i) + " ");
