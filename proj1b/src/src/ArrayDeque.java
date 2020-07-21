@@ -159,11 +159,12 @@ public class ArrayDeque<Item> implements Deque<Item> {
 
     /** Creates a deep copy of other. */
     public ArrayDeque(ArrayDeque other) {
-        Item[] copyOfOther = (Item[]) new Object[size];
+        Item[] newArrayDeque = (Item[]) new Object[other.size];
+        nextFirst = other.nextFirst;
+        nextLast = other.nextLast;
+        size = other.size;
 
-        for (int i = 0; i < size; i++) {
-            copyOfOther[i] = items[i];
-        }
+        System.arraycopy(other.items, 0, items, 0, other.size);
     }
 
 }

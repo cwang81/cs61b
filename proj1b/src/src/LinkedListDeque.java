@@ -132,7 +132,6 @@ public class LinkedListDeque<Item> implements Deque<Item> {
 
         for (int i = 0; i < other.size(); i++) {
             addLast(other.get(i));
-            addLast(other.get(i));
         }
     }
 
