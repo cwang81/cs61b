@@ -107,16 +107,16 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
 
     private class ARBIterator implements Iterator<T> {
         private int count;
-        private int seer;
+        private int nextDex;
 
         public ARBIterator() {
-            seer = first;
+            nextDex = first;
             count = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return seer < fillCount;
+            return nextDex < fillCount;
         }
 
         @Override
@@ -124,8 +124,8 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            T returnItem = rb[seer];
-            seer += plusOne(seer);
+            T returnItem = rb[nextDex];
+            nextDex += plusOne(nextDex);
             count += 1;
             return returnItem;
         }
