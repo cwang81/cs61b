@@ -15,7 +15,16 @@ public class ExperimentHelper {
      *  N = 8, OIPL: 13
      */
     public static int optimalIPL(int N) {
-        return 0;
+        if (N <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        int sum = 0;
+        for(int i = 1; i <= N; i += 1) {
+            int additive = (int) (Math.log(i)/Math.log(2));
+            sum += additive;
+        }
+        return sum;
     }
 
     /** Returns the average depth for nodes in an optimal BST of
@@ -27,6 +36,18 @@ public class ExperimentHelper {
      * @return
      */
     public static double optimalAverageDepth(int N) {
-        return 0;
+        return (double) optimalIPL(N) / N;
+    }
+
+    public static void addInt(BST<Integer> bst) {
+        int tmp = RandomGenerator.getRandomInt(10000);
+        while (true) {
+            if (!bst.contains(tmp)) {
+                bst.add(tmp);
+                break;
+            } else {
+                tmp = RandomGenerator.getRandomInt(10000);
+            }
+        }
     }
 }

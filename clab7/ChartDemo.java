@@ -24,7 +24,8 @@ public class ChartDemo {
             y2Values.add(thisY2);
         }
 
-        XYChart chart = new XYChartBuilder().width(800).height(600).xAxisTitle("x label").yAxisTitle("y label").build();
+        XYChart chart = new XYChartBuilder().width(800).height(600).
+                xAxisTitle("x label").yAxisTitle("y label").build();
         chart.addSeries("x + random(0, 10)", xValues, yValues);
         chart.addSeries("100*Math.sin(x)", xValues, y2Values);
 
