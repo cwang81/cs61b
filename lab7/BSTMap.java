@@ -10,10 +10,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         private V val;
         private Node left, right;
 
-        public Node(K key, V val, int size) {
+        public Node(K key, V val) {
             this.key = key;
             this.val = val;
-            this.size = size;
+            this.size = 1;
         }
     }
 
@@ -100,7 +100,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     private Node put(Node x, K key, V value) {
         if (x == null) {
-            return new Node(key, value, 1);
+            return new Node(key, value);
         }
         int cmp = key.compareTo(x.key);
         if (cmp > 0) {
@@ -141,6 +141,15 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         } else {
             return x.val;
         }
+    }
+
+    private void printInOrder(Node x) {
+        if (x == null) {
+            return;
+        }
+        printInOrder(x.left);
+        System.out.println(x.key);
+        printInOrder(x.right);
     }
 
     /**
@@ -194,7 +203,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      * @return the Node with minimum key
      */
     private Node min(Node x) {
-        while (x.left != null) {
+        if (x.left != null) {
             return min(x.left);
         }
         return x;
