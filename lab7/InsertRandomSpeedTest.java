@@ -28,7 +28,7 @@ public class InsertRandomSpeedTest {
             System.out.print("\nEnter # strings to insert into the maps: ");
             int N = waitForPositiveInt(input);
             timeRandomMap61B(new ULLMap<>(), N, L);
-            timeRandomMap61B(new BSTMap<>(), N, L);
+            timeRandomMap61B(new BSTMap2<>(), N, L);
             timeRandomTreeMap(new TreeMap<>(), N, L);
 
             System.out.print("\nWould you like to try more timed-tests? (y/n)");

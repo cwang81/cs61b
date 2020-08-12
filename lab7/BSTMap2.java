@@ -1,10 +1,9 @@
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class BSTMap2<K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
 
     private class Node {
         public K key;
@@ -12,11 +11,13 @@ public class BSTMap2<K extends Comparable<K>, V> implements Map61B<K, V> {
         public int size;
         public Node left;
         public Node right;
+        private boolean color;
 
-        public Node(K key, V value) {
+        public Node(K key, V value, int size, boolean color) {
             this.key = key;
             this.value = value;
-            this.size = 1;
+            this.color = color;
+            this.size = size;
         }
     }
 
@@ -106,11 +107,12 @@ public class BSTMap2<K extends Comparable<K>, V> implements Map61B<K, V> {
             remove(key);
         }
         root = put(root, key, value);
+        root.color = BLACK;
     }
 
     private Node put(Node n, K key, V value) {
         if (n == null) {
-            return new Node(key, value);
+            return new Node(key, value, 1, RED);
         } else {
             int cmp = key.compareTo(n.key);
             if (cmp > 0) {
@@ -120,6 +122,17 @@ public class BSTMap2<K extends Comparable<K>, V> implements Map61B<K, V> {
             } else {
                 n.value = value;
             }
+
+            if (isRed(n.right) && !isRed(n.left)) {
+                n = rotateLeft(n);
+            }
+            if (isRed(n.left) && isRed(n.right)) {
+                flipColor(n);
+            }
+            if (isRed(n.left) && isRed(n.left.left)) {
+                n = rotateRight(n);
+            }
+
             n.size = size(n.left) + size(n.right) + 1;
             return n;
         }
@@ -128,7 +141,11 @@ public class BSTMap2<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        return null;
+        Set<K> keySet = new HashSet<>();
+        for (K key : this) {
+            keySet.add(key);
+        }
+        return keySet;
     }
 
     /* Removes the mapping for the specified key from this map if present.
@@ -240,6 +257,40 @@ public class BSTMap2<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
+    private boolean isRed(Node x) {
+        if (x == null) {
+            return false;
+        }
+        return x.color = RED;
+    }
+
+    private Node rotateRight(Node h) {
+        Node x = h.left;
+        h.left = x.right;
+        x.right = h;
+        x.color = h.color;
+        h.color = RED;
+        x.size = h.size;
+        h.size = 1 + size(h.left) + size(h.right);
+        return x;
+    }
+
+    private Node rotateLeft(Node h) {
+        Node x = h.right;
+        h.right = x.left;
+        x.left = h;
+        x.color = h.color;
+        h.color = RED;
+        x.size = h.size;
+        h.size = 1 + size(h.left) + size(h.right);
+        return x;
+    }
+
+    private void flipColor(Node h) {
+        h.color = RED;
+        h.left.color = BLACK;
+        h.right.color = BLACK;
+    }
 
     public void printInOrder() {
         printInOrder(root);
