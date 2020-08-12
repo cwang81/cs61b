@@ -289,8 +289,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public Set<K> keySet() {
-        // TODO
-        throw new UnsupportedOperationException();
+        Set<K> keySet = new HashSet<>();
+        for (K key : this) {
+            keySet.add(key);
+        }
+        return keySet;
     }
 
 }
